@@ -1,0 +1,6 @@
+### get all payment
+
+GET http://localhost:3000/payment
+
+###
+GET http://localhost:3000/payment/997

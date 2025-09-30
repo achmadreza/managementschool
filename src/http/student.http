@@ -1,0 +1,53 @@
+
+GET http://localhost:3000/
+
+###
+POST http://localhost:3000/ 
+Content-Type: application/json
+
+{
+  "id": "001",
+  "nama": "miftah",
+  "kelas": "2A",
+  "nomor_induk": 997,
+  "tanggal_lahir": "Fri Sep 18 1998 00:00:00 GMT+0700 (Western Indonesia Time)",
+  "nama_orangtua": "suparmono",
+  "tahun_ajaran": 2024,
+  "no_hp": "0812828918299"
+}
+
+
+### all student
+GET http://localhost:3000/student
+
+### deatail student
+GET http://localhost:3000/student/997
+
+
+###
+Put http://localhost:3000/student/payment/997
+content-type: application/json
+
+{
+  "statusPembayaran":"BELUM LUNAS"
+}
+
+###
+POST http://localhost:3000/student
+content-type: application/json
+
+{
+  "nama": "miftah",
+  "kelas": "TK A",
+  "tanggalLahir": "Fri Sep 18 1998 00:00:00 GMT+0700 (Western Indonesia Time)",
+  "namaAyah": "suparmono",
+  "namaIbu":"surti",
+  "tahunAjaran": 2024,
+  "noHp": "0812828918299",
+  "anualFee":5000000,
+  "tuitionFee":300000,
+  "registrationFee":100000,
+  "uniformFee":50000,
+  "paymentPhoto":"nhfkahfkhnae,fnjkeanbkhfaskfhuae"
+}
+
