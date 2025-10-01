@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import { uuid } from "../helper/generateUuid";
 
 // const uuid = crypto.randomUUID();
-interface IPayment {
+export interface IPayment {
   id: string;
   nomorInduk: number;
   anualFee: number;

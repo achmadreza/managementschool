@@ -42,7 +42,7 @@ const editStudentSchema = Joi.object<ValidationEditStudent>({
 });
 
 student.get("/", getAllStudent);
-student.post("/", addStudent);
+// student.post("/", addStudent);
 student.get("/:noInduk", detailStudent);
 student.put(
   "/:noInduk",

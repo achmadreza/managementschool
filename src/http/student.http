@@ -24,7 +24,7 @@ GET http://localhost:3000/student
 GET http://localhost:3000/student/997
 
 
-###
+### edit status pembayaran
 Put http://localhost:3000/student/payment/997
 content-type: application/json
 
@@ -32,22 +32,35 @@ content-type: application/json
   "statusPembayaran":"BELUM LUNAS"
 }
 
-###
-POST http://localhost:3000/student
-content-type: application/json
+### 
+# POST http://localhost:3000/student
+# content-type: application/json
+
+# {
+#   "nama": "miftah",
+#   "kelas": "TK A",
+#   "tanggalLahir": "Fri Sep 18 1998 00:00:00 GMT+0700 (Western Indonesia Time)",
+#   "namaAyah": "suparmono",
+#   "namaIbu":"surti",
+#   "tahunAjaran": 2024,
+#   "noHp": "0812828918299",
+#   "anualFee":5000000,
+#   "tuitionFee":300000,
+#   "registrationFee":100000,
+#   "uniformFee":50000,
+#   "paymentPhoto":"nhfkahfkhnae,fnjkeanbkhfaskfhuae"
+# }
+
+### edit student
+PUT http://localhost:3000/student/2025021
+Content-Type: application/json
 
 {
-  "nama": "miftah",
+  "nama":"Sesko",
   "kelas": "TK A",
   "tanggalLahir": "Fri Sep 18 1998 00:00:00 GMT+0700 (Western Indonesia Time)",
   "namaAyah": "suparmono",
   "namaIbu":"surti",
   "tahunAjaran": 2024,
-  "noHp": "0812828918299",
-  "anualFee":5000000,
-  "tuitionFee":300000,
-  "registrationFee":100000,
-  "uniformFee":50000,
-  "paymentPhoto":"nhfkahfkhnae,fnjkeanbkhfaskfhuae"
+  "noHp": "0812828918299"
 }
-

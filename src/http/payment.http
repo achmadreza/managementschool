@@ -2,5 +2,22 @@
 
 GET http://localhost:3000/payment
 
-###
+### detail Payment
 GET http://localhost:3000/payment/997
+
+### generate url register
+GET http://localhost:3000/payment/generate/2025021
+
+### add payment return url register
+POST http://localhost:3000/payment/
+Content-Type: application/json
+
+{
+    "nama":"Sesko",
+    "noHp": "0812828918299",
+    "anualFee":5000000,
+    "tuitionFee":300000,
+    "registrationFee":100000,
+    "uniformFee":50000,
+    "paymentPhoto":"nhfkahfkhnae,fnjkeanbkhfaskfhuae"
+}

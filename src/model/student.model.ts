@@ -42,15 +42,15 @@ const studentSchema = new Schema<IStudent>({
   },
   namaAyah: {
     type: String,
-    required: true,
+    // required: true,
   },
   namaIbu: {
     type: String,
-    required: true,
+    // required: true,
   },
   noHp: {
     type: String,
-    required: true,
+    // required: true,
   },
   nomorInduk: {
     type: Number,
