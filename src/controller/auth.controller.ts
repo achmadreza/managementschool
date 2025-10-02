@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response) => {
   }
   const isPassowd = await bcrypt.compare(password, findUser.password);
   if (!isPassowd) {
-    return res.status(400).json({ message: "user / password salah" });
+    return res.status(400).json({ message: "username / password salah" });
   }
   return res.json({
     message: "Login sukses",

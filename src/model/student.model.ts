@@ -13,6 +13,11 @@ export enum Kelas {
   TKA = "TK A",
   TKB = "TK B",
 }
+
+export enum Gender {
+  LAKI_LAKI = "LAKI LAKI",
+  PEREMPUAN = "PEREMPUAN",
+}
 export interface IStudent extends Document {
   id: string;
   nama: string;
@@ -25,6 +30,7 @@ export interface IStudent extends Document {
   noHp: string;
   statusPembayaran: StatusPayment;
   createdDate: Date;
+  gender: Gender;
 }
 
 const studentSchema = new Schema<IStudent>({
@@ -35,6 +41,7 @@ const studentSchema = new Schema<IStudent>({
   kelas: {
     type: String,
     enum: Kelas,
+    default: null,
   },
   nama: {
     type: String,
@@ -42,23 +49,32 @@ const studentSchema = new Schema<IStudent>({
   },
   namaAyah: {
     type: String,
+    default: null,
     // required: true,
   },
   namaIbu: {
     type: String,
     // required: true,
+    default: null,
   },
   noHp: {
     type: String,
     // required: true,
+    default: null,
   },
   nomorInduk: {
     type: Number,
     // required: true,
     unique: true,
   },
-  tahunAjaran: Number,
-  tanggalLahir: Date,
+  tahunAjaran: {
+    type: Number,
+    default: new Date().getFullYear(),
+  },
+  tanggalLahir: {
+    type: Date,
+    default: null,
+  },
   statusPembayaran: {
     type: String,
     enum: StatusPayment,
@@ -67,6 +83,11 @@ const studentSchema = new Schema<IStudent>({
   createdDate: {
     type: Date,
     default: new Date(),
+  },
+  gender: {
+    type: String,
+    enum: Gender,
+    default: null,
   },
 });
 

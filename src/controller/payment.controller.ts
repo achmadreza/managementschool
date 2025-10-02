@@ -3,7 +3,13 @@ import { IPayment, Payment } from "../model/payment.model";
 import { IStudent, Student } from "../model/student.model";
 
 const generateUrlHelper = (noInduk: string, nama: string) => {
-  return `${process.env.URL_APP}/register?noInduk=${noInduk}&nama=${nama}`;
+  const searchParams = {
+    nomorInduk: noInduk,
+    nama,
+  };
+  const jsonString = JSON.stringify(searchParams);
+  const encodeBase64 = Buffer.from(jsonString).toString("base64");
+  return `${process.env.URL_APP}/register?data=${encodeBase64}`;
 };
 
 export const getAllPayment = async (req: Request, res: Response) => {
