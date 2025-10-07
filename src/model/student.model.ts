@@ -15,7 +15,7 @@ export enum Kelas {
 }
 
 export enum Gender {
-  LAKI_LAKI = "LAKI LAKI",
+  LAKI_LAKI = "LAKI-LAKI",
   PEREMPUAN = "PEREMPUAN",
 }
 export interface IStudent extends Document {

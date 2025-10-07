@@ -55,7 +55,7 @@ export const editStatusPayment = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Siswa tidak ditemukan" });
   }
   return res.status(200).json({
-    message: "Data pembayaran berhasil diganti",
+    message: "Data pembayaran berhasil diupdate",
     data: { statusPembayaran },
   });
 };

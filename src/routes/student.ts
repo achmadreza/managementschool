@@ -8,7 +8,7 @@ import {
 } from "../controller/student.controller";
 import Joi from "joi";
 
-import { Kelas, StatusPayment } from "../model/student.model";
+import { Gender, Kelas, StatusPayment } from "../model/student.model";
 import { validationMiddleware } from "./validator/validator";
 
 interface ValidationEditPaymentStatus {
@@ -23,6 +23,7 @@ export interface ValidationEditStudent {
   namaIbu: string;
   tahunAjaran: number;
   noHp: string;
+  gender: Gender;
 }
 
 export const student = express.Router();
@@ -39,6 +40,7 @@ const editStudentSchema = Joi.object<ValidationEditStudent>({
   noHp: Joi.string().min(3),
   tahunAjaran: Joi.number().required(),
   tanggalLahir: Joi.date(),
+  gender: Joi.string().valid(...Object.values(Gender)),
 });
 
 student.get("/", getAllStudent);
