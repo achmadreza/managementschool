@@ -6,6 +6,7 @@ import { uuid } from "../helper/generateUuid";
 export interface IPayment {
   id: string;
   nomorInduk: number;
+  nama: string;
   anualFee: number;
   tuitionFee: number;
   registrationFee: number;
@@ -23,11 +24,15 @@ const paymentSchema = new Schema<IPayment>({
     type: Number,
     required: true,
   },
+  nama: {
+    type: String,
+    required: true,
+  },
   anualFee: Number,
   tuitionFee: Number,
   registrationFee: Number,
   uniformFee: Number,
-  paymentPhoto: String,
+  paymentPhoto: { type: String, default: null },
   createdDate: {
     type: Date,
     default: new Date(),

@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import { IPayment, Payment } from "../model/payment.model";
 import { IStudent, Student } from "../model/student.model";
 
-const generateUrlHelper = (noInduk: string, nama: string) => {
+const generateUrlHelper = (noInduk: string, nama: string, noHp: string) => {
   const searchParams = {
     nomorInduk: noInduk,
     nama,
+    noHp,
   };
   const jsonString = JSON.stringify(searchParams);
   const encodeBase64 = Buffer.from(jsonString).toString("base64");
@@ -71,6 +72,7 @@ export const addPayment = async (req: Request, res: Response) => {
     await Payment.create({
       anualFee,
       tuitionFee,
+      nama: newStudent.nama,
       registrationFee,
       uniformFee,
       paymentPhoto,
@@ -78,7 +80,11 @@ export const addPayment = async (req: Request, res: Response) => {
     });
     return res.status(201).json({
       message: "berhasil memasukan data siswa",
-      url: generateUrlHelper(newStudent.nomorInduk.toString(), newStudent.nama),
+      url: generateUrlHelper(
+        newStudent.nomorInduk.toString(),
+        newStudent.nama,
+        newStudent.noHp
+      ),
     });
   } catch (error: any) {
     return res
@@ -100,6 +106,10 @@ export const generateUrl = async (req: Request, res: Response) => {
   }
   return res.status(200).json({
     message: "Berhasil generate url",
-    url: generateUrlHelper(noInduk as string, findStudent.nama),
+    url: generateUrlHelper(
+      noInduk as string,
+      findStudent.nama,
+      findStudent.noHp
+    ),
   });
 };
