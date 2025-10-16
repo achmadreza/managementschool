@@ -3,7 +3,7 @@
 GET http://localhost:3000/payment
 
 ### detail Payment
-GET http://localhost:3000/payment/997
+GET http://localhost:3000/payment/2025021
 
 ### generate url register
 GET http://localhost:3000/payment/generate/2025021

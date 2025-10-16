@@ -33,7 +33,9 @@ export const getPaymentStudent = async (req: Request, res: Response) => {
   // console.log(await Student.find({}));
   const { noInduk } = req.params;
   try {
-    const studentPayment = await Payment.find({ nomor_induk: Number(noInduk) });
+    const studentPayment = await Payment.findOne({
+      nomorInduk: Number(noInduk),
+    });
     res.status(200).json({
       message: "Ambil data pembayaran sukses",
       data: studentPayment,
