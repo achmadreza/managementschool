@@ -10,8 +10,9 @@ export enum StatusPayment {
 }
 
 export enum Kelas {
-  TKA = "TK A",
-  TKB = "TK B",
+  KINDERGARTENA = "KINDERGARTEN A",
+  KINDERGARTENB = "KINDERGARTEN B",
+  PRESCHOOL = "PRESCHOOL",
 }
 
 export enum Gender {
