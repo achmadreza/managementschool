@@ -32,6 +32,9 @@ export interface IStudent extends Document {
   statusPembayaran: StatusPayment;
   createdDate: Date;
   gender: Gender;
+  pasPhoto: string;
+  kk: string;
+  akteLahir: string;
 }
 
 const studentSchema = new Schema<IStudent>({
@@ -88,6 +91,18 @@ const studentSchema = new Schema<IStudent>({
   gender: {
     type: String,
     enum: Gender,
+    default: null,
+  },
+  pasPhoto: {
+    type: String,
+    default: null,
+  },
+  akteLahir: {
+    type: String,
+    default: null,
+  },
+  kk: {
+    type: String,
     default: null,
   },
 });
