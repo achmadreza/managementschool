@@ -15,8 +15,12 @@ const generateUrlHelper = (noInduk: string, nama: string, noHp: string) => {
 
 export const getAllPayment = async (req: Request, res: Response) => {
   // console.log(await Student.find({}));
+  const { q } = req.query;
   try {
-    const allPayment = await Payment.find({});
+    let allPayment = await Payment.find({});
+    if (q) {
+      allPayment = await Payment.find({ nama: { $regex: q, $options: "i" } });
+    }
     res.status(200).json({
       message: "Ambil data semua pembayaran sukses",
       data: allPayment,

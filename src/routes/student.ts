@@ -24,6 +24,9 @@ export interface ValidationEditStudent {
   tahunAjaran: number;
   noHp: string;
   gender: Gender;
+  pasPhoto: string;
+  kk: string;
+  akteLahir: string;
 }
 
 export const student = express.Router();
@@ -41,6 +44,9 @@ const editStudentSchema = Joi.object<ValidationEditStudent>({
   tahunAjaran: Joi.number().required(),
   tanggalLahir: Joi.date(),
   gender: Joi.string().valid(...Object.values(Gender)),
+  kk: Joi.string(),
+  akteLahir: Joi.string(),
+  pasPhoto: Joi.string(),
 });
 
 student.get("/", getAllStudent);

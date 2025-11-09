@@ -20,6 +20,10 @@ Content-Type: application/json
 ### all student
 GET http://localhost:3000/student
 
+### all student with search params
+GET http://localhost:3000/student?q=
+
+
 ### deatail student
 GET http://localhost:3000/student/997
 

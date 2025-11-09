@@ -6,8 +6,13 @@ import { ValidationEditStudent } from "../routes/student";
 // ambil data semua siswa
 export const getAllStudent = async (req: Request, res: Response) => {
   // console.log(await Student.find({}));
+  const { q } = req.query;
+
   try {
-    const allStudent = await Student.find({});
+    let allStudent = await Student.find({});
+    if (q) {
+      allStudent = await Student.find({ nama: { $regex: q, $options: "i" } });
+    }
     res.status(200).json({
       message: "Ambil data semua siswa sukses",
       data: allStudent,
