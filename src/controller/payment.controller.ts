@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { IPayment, Payment } from "../model/payment.model";
-import { IStudent, Student } from "../model/student.model";
+import { IStudent, StatusPayment, Student } from "../model/student.model";
+import { Instalment } from "../model/instalment.model";
+import { Price } from "../model/price.model";
 
 const generateUrlHelper = (noInduk: string, nama: string, noHp: string) => {
   const searchParams = {
@@ -37,9 +39,19 @@ export const getPaymentStudent = async (req: Request, res: Response) => {
   // console.log(await Student.find({}));
   const { noInduk } = req.params;
   try {
-    const studentPayment = await Payment.findOne({
-      nomorInduk: Number(noInduk),
-    });
+    const studentPayment = await Payment.aggregate([
+      {
+        $match: { nomorInduk: Number(noInduk) },
+      },
+      {
+        $lookup: {
+          from: "instalments",
+          localField: "id",
+          foreignField: "paymentId",
+          as: "instalment",
+        },
+      },
+    ]);
     res.status(200).json({
       message: "Ambil data pembayaran sukses",
       data: studentPayment,
@@ -61,21 +73,26 @@ export const addPayment = async (req: Request, res: Response) => {
     registrationFee,
     uniformFee,
     paymentPhoto,
+    isInstalment,
+    paymentFee,
   } = req.body;
   let newStudent;
   try {
     newStudent = await Student.create({
       nama,
       noHp,
+      statusPembayaran: isInstalment
+        ? StatusPayment.BELUM_LUNAS
+        : StatusPayment.LUNAS,
     });
   } catch (error: any) {
     return res
       .status(400)
       .json({ message: "Gagal melakukan pembayaran", error: error.messge });
   }
-
+  let newPayment;
   try {
-    await Payment.create({
+    newPayment = await Payment.create({
       anualFee,
       tuitionFee,
       nama: newStudent.nama,
@@ -84,6 +101,14 @@ export const addPayment = async (req: Request, res: Response) => {
       paymentPhoto,
       nomorInduk: newStudent.nomorInduk,
     });
+
+    if (isInstalment) {
+      await Instalment.create({
+        paymentId: newPayment.id,
+        paymentFee,
+      });
+    }
+
     return res.status(201).json({
       message: "berhasil memasukan data siswa",
       url: generateUrlHelper(
@@ -118,4 +143,50 @@ export const generateUrl = async (req: Request, res: Response) => {
       findStudent.noHp
     ),
   });
+};
+
+export const addInstalment = async (req: Request, res: Response) => {
+  const { paymentId } = req.params;
+  const { paymentFee } = req.body;
+
+  try {
+    const newInstalment = await Instalment.create({
+      paymentFee,
+      paymentId,
+    });
+
+    const payment = await Payment.findOne({ id: paymentId });
+    const student = await Student.findOne({ nomorInduk: payment?.nomorInduk });
+    const instalment = await Instalment.find({ paymentId });
+    const price = await Price.findOne({ kelas: student?.kelas });
+    let total;
+    if (price) {
+      total =
+        price.registrationFee +
+        price.tuitionFee +
+        price.anualFee +
+        price.uniformFee;
+    }
+    const totalInstalment = instalment.reduce(
+      (acc, curr) => acc + curr.paymentFee,
+      0
+    );
+
+    console.log(total, totalInstalment);
+    if (total && total >= totalInstalment) {
+      await Student.findOneAndUpdate(
+        { nomorInduk: student?.nomorInduk },
+        { statusPembayaran: StatusPayment.LUNAS }
+      );
+    }
+
+    return res.status(200).json({
+      message: "Sukses menambahkan instalment",
+      data: newInstalment,
+    });
+  } catch (error: any) {
+    return res
+      .status(400)
+      .json({ message: "Gagal melakukan pembayaran", error: error.messge });
+  }
 };

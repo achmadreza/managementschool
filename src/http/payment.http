@@ -2,8 +2,11 @@
 
 GET http://localhost:3000/payment
 
+### get all payment with search params
+GET http://localhost:3000/payment?q=ses
+
 ### detail Payment
-GET http://localhost:3000/payment/2025021
+GET http://localhost:3000/payment/2025025
 
 ### generate url register
 GET http://localhost:3000/payment/generate/2025021
@@ -20,4 +23,28 @@ Content-Type: application/json
     "registrationFee":100000,
     "uniformFee":50000,
     "paymentPhoto":"nhfkahfkhnae,fnjkeanbkhfaskfhuae"
+}
+
+### add payment instalment
+POST http://localhost:3000/payment/
+Content-Type: application/json
+
+{
+    "nama":"Benjamin",
+    "noHp": "0812828918299",
+    "anualFee":0,
+    "tuitionFee":0,
+    "registrationFee":0,
+    "uniformFee":0,
+    "paymentPhoto":"nhfkahfkhnae,fnjkeanbkhfaskfhuae",
+    "isInstalment":true,
+    "paymentFee":1000000
+}
+
+### add instalment
+POST http://localhost:3000/payment/instalment/4qAaBgNALtY1kbi5__wJp
+Content-Type: application/json
+
+{
+   "paymentFee":1000000
 }
