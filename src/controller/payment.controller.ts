@@ -51,10 +51,11 @@ export const getPaymentStudent = async (req: Request, res: Response) => {
           as: "instalment",
         },
       },
+      { $limit: 1 },
     ]);
     res.status(200).json({
       message: "Ambil data pembayaran sukses",
-      data: studentPayment,
+      data: studentPayment[0],
     });
   } catch (error: any) {
     console.log(error);
@@ -177,6 +178,15 @@ export const addInstalment = async (req: Request, res: Response) => {
       await Student.findOneAndUpdate(
         { nomorInduk: student?.nomorInduk },
         { statusPembayaran: StatusPayment.LUNAS }
+      );
+      await Payment.findOneAndUpdate(
+        { id: paymentId },
+        {
+          tuitionFee: price?.tuitionFee,
+          uniformFee: price?.uniformFee,
+          registrationFee: price?.registrationFee,
+          anualFee: price?.anualFee,
+        }
       );
     }
 
