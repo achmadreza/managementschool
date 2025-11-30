@@ -38,6 +38,7 @@
     "mongoose": "^8.18.2",
     "mongoose-sequence": "^6.0.1",
     "nanoid": "^5.1.6",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }

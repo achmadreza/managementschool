@@ -5,6 +5,7 @@ import cors from "cors";
 import { payment } from "./routes/payment";
 import { auth } from "./routes/auth";
 import { Counter } from "./model/counter.model";
+import { downloadPayment } from "./controller/payment.controller";
 const app = express();
 
 app.use(express.json());
@@ -22,6 +23,7 @@ app.post("/", (req: Request, res: Response) => {
   return;
 });
 
+app.get("/download/payment", downloadPayment);
 app.use("/student", student);
 app.use("/payment", payment);
 app.use("/auth", auth);

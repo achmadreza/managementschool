@@ -3,6 +3,7 @@ import { IPayment, Payment } from "../model/payment.model";
 import { IStudent, StatusPayment, Student } from "../model/student.model";
 import { Instalment } from "../model/instalment.model";
 import { Price } from "../model/price.model";
+import XLSX from "xlsx";
 
 const generateUrlHelper = (noInduk: string, nama: string, noHp: string) => {
   const searchParams = {
@@ -53,9 +54,10 @@ export const getPaymentStudent = async (req: Request, res: Response) => {
       },
       { $limit: 1 },
     ]);
+    const isInstalment = studentPayment[0].instalment.length > 0;
     res.status(200).json({
       message: "Ambil data pembayaran sukses",
-      data: studentPayment[0],
+      data: { ...studentPayment[0], isInstalment },
     });
   } catch (error: any) {
     console.log(error);
@@ -199,4 +201,55 @@ export const addInstalment = async (req: Request, res: Response) => {
       .status(400)
       .json({ message: "Gagal melakukan pembayaran", error: error.messge });
   }
+};
+
+export const downloadPayment = async (req: Request, res: Response) => {
+  const getPayment = await Payment.find({});
+
+  const rows = getPayment.map((p) => {
+    return {
+      nomorInduk: p.nomorInduk,
+      nama: p.nama,
+      registrationFee: p.registrationFee,
+      annualFee: p.anualFee,
+      tuitionFee: p.tuitionFee,
+      uniformFee: p.uniformFee,
+    };
+  });
+
+  const workSheet = XLSX.utils.json_to_sheet(rows);
+
+  workSheet["!cols"] = [
+    { wch: 15 },
+    { wch: 10 },
+    { wch: 20 },
+    { wch: 15 },
+    { wch: 15 },
+    { wch: 15 },
+  ];
+
+  const workBook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workBook, workSheet, "Payment");
+
+  XLSX.utils.sheet_add_aoa(
+    workSheet,
+    [
+      [
+        "Nomor Induk",
+        "Nama",
+        "Registration Fee",
+        "Annual Fee",
+        "Tuition Fee",
+        "Uniform Fee",
+      ],
+    ],
+    { origin: "A1" }
+  );
+
+  const buf = XLSX.write(workBook, { type: "buffer", bookType: "xlsx" });
+
+  res.attachment(`All Payment ${new Date().toLocaleDateString()}.xlsx`);
+
+  res.status(200).end(buf);
 };

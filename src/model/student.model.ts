@@ -35,6 +35,7 @@ export interface IStudent extends Document {
   pasPhoto: string;
   kk: string;
   akteLahir: string;
+  alamat: string;
 }
 
 const studentSchema = new Schema<IStudent>({
@@ -102,6 +103,10 @@ const studentSchema = new Schema<IStudent>({
     default: null,
   },
   kk: {
+    type: String,
+    default: null,
+  },
+  alamat: {
     type: String,
     default: null,
   },
