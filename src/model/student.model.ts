@@ -27,7 +27,7 @@ export interface IStudent extends Document {
   tanggalLahir: Date;
   namaAyah: string;
   namaIbu: string;
-  tahunAjaran: number;
+  tahunAjaran: string;
   noHp: string;
   statusPembayaran: StatusPayment;
   createdDate: Date;
@@ -73,7 +73,7 @@ const studentSchema = new Schema<IStudent>({
     unique: true,
   },
   tahunAjaran: {
-    type: Number,
+    type: String,
     default: new Date().getFullYear(),
   },
   tanggalLahir: {

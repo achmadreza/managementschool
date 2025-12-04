@@ -76,7 +76,7 @@ export const editStudent = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Siswa tidak ditemukan" });
   }
   return res.status(200).json({
-    message: "Data siswa berhasil diganti",
+    message: "Data siswa berhasil diupdate",
     data: { ...data },
   });
 };

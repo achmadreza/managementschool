@@ -21,12 +21,13 @@ export interface ValidationEditStudent {
   tanggalLahir: Date;
   namaAyah: string;
   namaIbu: string;
-  tahunAjaran: number;
+  tahunAjaran: string;
   noHp: string;
   gender: Gender;
   pasPhoto: string;
   kk: string;
   akteLahir: string;
+  alamat: string;
 }
 
 export const student = express.Router();
@@ -41,12 +42,13 @@ const editStudentSchema = Joi.object<ValidationEditStudent>({
   namaAyah: Joi.string().min(1),
   namaIbu: Joi.string().min(1),
   noHp: Joi.string().min(3),
-  tahunAjaran: Joi.number().required(),
+  tahunAjaran: Joi.string().required(),
   tanggalLahir: Joi.date(),
   gender: Joi.string().valid(...Object.values(Gender)),
   kk: Joi.string(),
   akteLahir: Joi.string(),
   pasPhoto: Joi.string(),
+  alamat: Joi.string(),
 });
 
 student.get("/", getAllStudent);

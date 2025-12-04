@@ -5,11 +5,17 @@ import { Instalment } from "../model/instalment.model";
 import { Price } from "../model/price.model";
 import XLSX from "xlsx";
 
-const generateUrlHelper = (noInduk: string, nama: string, noHp: string) => {
+const generateUrlHelper = (
+  noInduk: string,
+  nama: string,
+  noHp: string,
+  tahunAjaran: string
+) => {
   const searchParams = {
     nomorInduk: noInduk,
     nama,
     noHp,
+    tahunAjaran,
   };
   const jsonString = JSON.stringify(searchParams);
   const encodeBase64 = Buffer.from(jsonString).toString("base64");
@@ -117,7 +123,8 @@ export const addPayment = async (req: Request, res: Response) => {
       url: generateUrlHelper(
         newStudent.nomorInduk.toString(),
         newStudent.nama,
-        newStudent.noHp
+        newStudent.noHp,
+        newStudent.tahunAjaran
       ),
     });
   } catch (error: any) {
@@ -143,7 +150,8 @@ export const generateUrl = async (req: Request, res: Response) => {
     url: generateUrlHelper(
       noInduk as string,
       findStudent.nama,
-      findStudent.noHp
+      findStudent.noHp,
+      findStudent.tahunAjaran
     ),
   });
 };
@@ -207,6 +215,7 @@ export const downloadPayment = async (req: Request, res: Response) => {
   const getPayment = await Payment.find({});
 
   const rows = getPayment.map((p) => {
+    let total = p.registrationFee + p.anualFee + p.tuitionFee + p.uniformFee;
     return {
       nomorInduk: p.nomorInduk,
       nama: p.nama,
@@ -214,10 +223,33 @@ export const downloadPayment = async (req: Request, res: Response) => {
       annualFee: p.anualFee,
       tuitionFee: p.tuitionFee,
       uniformFee: p.uniformFee,
+      total,
+      status: p.registrationFee === 0 ? "BELUM LUNAS" : "LUNAS",
     };
   });
 
-  const workSheet = XLSX.utils.json_to_sheet(rows);
+  const totalAllStudent = () => {
+    let total = 0;
+    rows.map((r) => {
+      total += r.total;
+    });
+    return total;
+  };
+  const newRow = [
+    {
+      nomorInduk: "",
+      nama: "",
+      registrationFee: "",
+      annualFee: "",
+      tuitionFee: "",
+      uniformFee: "All Payment",
+      total: totalAllStudent(),
+      status: "",
+    },
+  ];
+  const mergedArray = [...rows, ...newRow];
+
+  const workSheet = XLSX.utils.json_to_sheet(mergedArray);
 
   workSheet["!cols"] = [
     { wch: 15 },
@@ -225,6 +257,8 @@ export const downloadPayment = async (req: Request, res: Response) => {
     { wch: 20 },
     { wch: 15 },
     { wch: 15 },
+    { wch: 15 },
+    { wch: 20 },
     { wch: 15 },
   ];
 
@@ -242,6 +276,8 @@ export const downloadPayment = async (req: Request, res: Response) => {
         "Annual Fee",
         "Tuition Fee",
         "Uniform Fee",
+        "Total Pembayaran",
+        "Status",
       ],
     ],
     { origin: "A1" }
