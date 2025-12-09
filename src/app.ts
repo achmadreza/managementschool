@@ -6,8 +6,7 @@ import { payment } from "./routes/payment";
 import { auth } from "./routes/auth";
 import { Counter } from "./model/counter.model";
 import { downloadPayment } from "./controller/payment.controller";
-import dotEnv from "dotenv";
-dotEnv.config();
+
 const app = express();
 
 console.log(process.env.URL_APP);
