@@ -25,11 +25,29 @@ const generateUrlHelper = (
 export const getAllPayment = async (req: Request, res: Response) => {
   // console.log(await Student.find({}));
   const { q } = req.query;
+  const regexPattren = q ? new RegExp(q as string, "i") : new RegExp("", "i");
   try {
-    let allPayment = await Payment.find({});
-    if (q) {
-      allPayment = await Payment.find({ nama: { $regex: q, $options: "i" } });
-    }
+    let allPayment;
+    // if (q) {
+    // allPayment = await Payment.find({ nama: { $regex: q, $options: "i" } });
+    allPayment = await Payment.aggregate([
+      {
+        $match: { nama: { $regex: regexPattren } },
+      },
+      {
+        $lookup: {
+          from: "students",
+          localField: "nomorInduk",
+          foreignField: "nomorInduk",
+          as: "student",
+        },
+      },
+      {
+        $unwind: "$student",
+      },
+    ]);
+    // }
+    // console.log(allPayment);
     res.status(200).json({
       message: "Ambil data semua pembayaran sukses",
       data: allPayment,
@@ -60,7 +78,9 @@ export const getPaymentStudent = async (req: Request, res: Response) => {
       },
       { $limit: 1 },
     ]);
-    const isInstalment = studentPayment[0].instalment.length > 0;
+    const isInstalment =
+      studentPayment[0].instalment.length > 0 ||
+      studentPayment[0].anualFee === 0;
     res.status(200).json({
       message: "Ambil data pembayaran sukses",
       data: { ...studentPayment[0], isInstalment },
@@ -77,6 +97,7 @@ export const addPayment = async (req: Request, res: Response) => {
   const {
     nama,
     noHp,
+    tahunAjaran,
     anualFee,
     tuitionFee,
     registrationFee,
@@ -88,13 +109,15 @@ export const addPayment = async (req: Request, res: Response) => {
   let newStudent;
   try {
     newStudent = await Student.create({
-      nama,
+      nama: nama.toLowerCase(),
       noHp,
+      tahunAjaran,
       statusPembayaran: isInstalment
         ? StatusPayment.BELUM_LUNAS
         : StatusPayment.LUNAS,
     });
   } catch (error: any) {
+    console.log(error);
     return res
       .status(400)
       .json({ message: "Gagal melakukan pembayaran", error: error.messge });
@@ -183,8 +206,9 @@ export const addInstalment = async (req: Request, res: Response) => {
       0
     );
 
-    console.log(total, totalInstalment);
-    if (total && total >= totalInstalment) {
+    console.log(total && total <= totalInstalment);
+    console.log(student?.nomorInduk);
+    if (total && total <= totalInstalment) {
       await Student.findOneAndUpdate(
         { nomorInduk: student?.nomorInduk },
         { statusPembayaran: StatusPayment.LUNAS }

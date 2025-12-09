@@ -41,7 +41,8 @@ export interface IStudent extends Document {
 const studentSchema = new Schema<IStudent>({
   id: {
     type: String,
-    default: uuid(),
+    default: () => uuid(),
+    unique: true,
   },
   kelas: {
     type: String,
@@ -74,7 +75,6 @@ const studentSchema = new Schema<IStudent>({
   },
   tahunAjaran: {
     type: String,
-    default: new Date().getFullYear(),
   },
   tanggalLahir: {
     type: Date,

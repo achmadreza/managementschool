@@ -15,7 +15,7 @@ export interface IPrice {
 const PriceSchema = new Schema<IPrice>({
   id: {
     type: String,
-    default: uuid(),
+    default: () => uuid(),
   },
   kelas: {
     type: String,

@@ -18,7 +18,7 @@ export interface IPayment {
 const paymentSchema = new Schema<IPayment>({
   id: {
     type: String,
-    default: uuid(),
+    default: () => uuid(),
   },
   nomorInduk: {
     type: Number,

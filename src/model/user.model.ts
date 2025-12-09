@@ -11,7 +11,7 @@ export interface IUser {
 const userSchema = new Schema<IUser>({
   id: {
     type: String,
-    default: uuid(),
+    default: () => uuid(),
   },
   userName: {
     type: String,

@@ -67,10 +67,11 @@ export const editStatusPayment = async (req: Request, res: Response) => {
 
 export const editStudent = async (req: Request, res: Response) => {
   const data: ValidationEditStudent = req.body;
+  const { nama, ...etc } = data;
   const { noInduk } = req.params;
   const updateStatus = await Student.findOneAndUpdate(
     { nomorInduk: noInduk },
-    { ...data }
+    { nama: nama.toLowerCase(), ...etc }
   );
   if (!updateStatus) {
     return res.status(400).json({ message: "Siswa tidak ditemukan" });

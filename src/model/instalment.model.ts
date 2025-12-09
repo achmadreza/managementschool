@@ -13,7 +13,7 @@ export interface IInstalment {
 const instalmentSchema = new Schema<IInstalment>({
   id: {
     type: String,
-    default: uuid(),
+    default: () => uuid(),
   },
   paymentId: String,
   paymentFee: Number,
