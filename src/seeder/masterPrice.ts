@@ -45,4 +45,4 @@ const addPrice = async () => {
 db.then(() => {
   addPrice();
 });
-//   mongoose.disconnect();
+// mongoose.disconnect();

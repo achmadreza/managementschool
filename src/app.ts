@@ -6,12 +6,18 @@ import { payment } from "./routes/payment";
 import { auth } from "./routes/auth";
 import { Counter } from "./model/counter.model";
 import { downloadPayment } from "./controller/payment.controller";
+import dotEnv from "dotenv";
+dotEnv.config();
 
 const app = express();
 
-console.log(process.env.URL_APP);
 app.use(express.json({ limit: "50mb" }));
-app.use(cors({ origin: process.env.URL_APP ?? "" }));
+app.use(
+  cors({
+    origin: process.env.URL_APP ?? "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.raw());
 app.use(express.urlencoded());
 app.get("/", async (req: Request, res: Response) => {
