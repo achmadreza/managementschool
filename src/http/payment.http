@@ -6,7 +6,7 @@ GET http://localhost:3000/payment
 GET http://localhost:3000/payment?q=ses
 
 ### detail Payment
-GET http://localhost:3000/payment/2025031
+GET http://localhost:3000/payment/2025021
 
 ### generate url register
 GET http://localhost:3000/payment/generate/2025021
@@ -47,4 +47,16 @@ Content-Type: application/json
 
 {
    "paymentFee":1000000
+}
+
+### edit payment
+PUT http://localhost:3000/payment/2025021
+Content-Type: application/json
+
+{
+    "isInstalment":false,
+    "anualFee":5000000,
+    "tuitionFee":500000,
+    "registrationFee":500000,
+    "uniformFee":50000
 }

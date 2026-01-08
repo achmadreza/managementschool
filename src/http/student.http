@@ -2,7 +2,7 @@
 GET http://localhost:3000/
 
 ###
-POST http://localhost:3000/ 
+PUT http://localhost:3000/ 
 Content-Type: application/json
 
 {

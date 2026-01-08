@@ -26,7 +26,7 @@ app.get("/", async (req: Request, res: Response) => {
   return;
 });
 
-app.post("/", (req: Request, res: Response) => {
+app.put("/", (req: Request, res: Response) => {
   res.json(req.body);
   return;
 });

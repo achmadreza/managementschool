@@ -102,9 +102,9 @@ export const addPayment = async (req: Request, res: Response) => {
     tuitionFee,
     registrationFee,
     uniformFee,
+    paymentFee,
     paymentPhoto,
     isInstalment,
-    paymentFee,
   } = req.body;
   let newStudent;
   try {
@@ -150,6 +150,35 @@ export const addPayment = async (req: Request, res: Response) => {
         newStudent.tahunAjaran
       ),
     });
+  } catch (error: any) {
+    return res
+      .status(400)
+      .json({ message: "Gagal melakukan pembayaran", error: error.messge });
+  }
+};
+
+export const editPayment = async (req: Request, res: Response) => {
+  const { noInduk } = req.params;
+  // console.log(noInduk);
+  const { isInstalment, ...data } = req.body;
+
+  if (isInstalment) {
+    const response = {
+      message: "Tidak bisa update karena siswa ini belum lunas",
+    };
+    return res.status(400).json(response);
+  }
+
+  try {
+    const updatePayment = await Payment.findOneAndUpdate(
+      { nomorInduk: noInduk },
+      { ...data }
+    );
+    const response = {
+      message: "Update payment berhasil",
+      data: updatePayment,
+    };
+    return res.status(200).json(response);
   } catch (error: any) {
     return res
       .status(400)
