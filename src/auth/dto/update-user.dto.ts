@@ -42,9 +42,8 @@ export class UpdateUserDto {
     example: 'PETANG03',
     description: 'User code',
   })
-  @IsOptional()
   @IsString()
-  schoolCode?: string;
+  schoolCode!: string;
 
   @ApiPropertyOptional({
     enum: UserRole,
