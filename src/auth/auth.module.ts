@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthController } from './auth.controller';
+import { UserController } from './user.controller';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -17,7 +18,7 @@ import { RolePermissionModule } from '../role-permission/role-permission.module'
     RolePermissionModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, UserController],
   providers: [AuthService, UserService, JwtAuthGuard],
 })
 export class AuthModule {}

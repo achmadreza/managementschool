@@ -63,7 +63,7 @@ export class JwtAuthGuard implements CanActivate {
         role: payload.role,
       };
       return true;
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException('Invalid or expired token');
     }
   }

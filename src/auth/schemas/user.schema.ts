@@ -21,6 +21,9 @@ export class User {
   @Prop()
   phone?: string;
 
+  @Prop({ type: String, default: null })
+  schoolCode?: string;
+
   @Prop({ type: String, enum: UserRole, default: UserRole.PARENT })
   role!: UserRole;
 
@@ -29,6 +32,12 @@ export class User {
 
   @Prop({ type: [String], default: [] })
   tokenBlacklist!: string[];
+
+  @Prop()
+  resetToken?: string;
+
+  @Prop()
+  resetTokenExpiry?: Date;
 
   @Prop({ default: Date.now })
   createdAt!: Date;

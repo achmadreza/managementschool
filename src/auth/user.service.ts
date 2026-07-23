@@ -1,8 +1,13 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -29,6 +34,7 @@ export class UserService {
       email: createUserDto.email,
       password: createUserDto.password,
       phone: createUserDto.phone,
+      schoolCode: createUserDto.schoolCode,
       googleOAuthID: createUserDto.googleOAuthID,
     });
     if (createUserDto.role) {
@@ -53,5 +59,58 @@ export class UserService {
     }
 
     return user;
+  }
+
+  async updateUser(
+    userId: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    const user = await this.userModel.findOne({ id: userId });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Check if email is being updated and if it already exists
+    if (updateUserDto.email && updateUserDto.email !== user.email) {
+      const existingEmail = await this.userModel.findOne({
+        email: updateUserDto.email,
+      });
+      if (existingEmail) {
+        throw new ConflictException('Email already in use');
+      }
+    }
+
+    // Check if schoolCode is being updated and if it already exists
+    if (
+      updateUserDto.schoolCode &&
+      updateUserDto.schoolCode !== user.schoolCode
+    ) {
+      const existingCode = await this.userModel.findOne({
+        schoolCode: updateUserDto.schoolCode,
+      });
+      if (existingCode) {
+        throw new ConflictException('School code already in use');
+      }
+    }
+
+    // Update user fields
+    if (updateUserDto.fullName) user.fullName = updateUserDto.fullName;
+    if (updateUserDto.email) user.email = updateUserDto.email;
+    if (updateUserDto.phone) user.phone = updateUserDto.phone;
+    if (updateUserDto.schoolCode) user.schoolCode = updateUserDto.schoolCode;
+    if (updateUserDto.role) user.role = updateUserDto.role;
+
+    return user.save();
+  }
+
+  async deleteUser(userId: string): Promise<{ message: string }> {
+    const result = await this.userModel.deleteOne({ id: userId });
+
+    if (result.deletedCount === 0) {
+      throw new NotFoundException('User not found');
+    }
+
+    return { message: 'User deleted successfully' };
   }
 }

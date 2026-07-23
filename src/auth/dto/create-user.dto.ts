@@ -48,8 +48,15 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  @Matches(/^[0-9\-\+\s\(\)]*$/, { message: 'Invalid phone format' })
+  @Matches(/^[0-9\-+\s()]*$/, { message: 'Invalid phone format' })
   phone?: string;
+
+  @ApiProperty({
+    example: 'PETANG03',
+    description: 'school code associated with the user',
+  })
+  @IsString()
+  schoolCode!: string;
 
   @ApiProperty({
     enum: UserRole,
