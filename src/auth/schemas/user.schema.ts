@@ -27,6 +27,9 @@ export class User {
   @Prop()
   googleOAuthID?: string;
 
+  @Prop({ type: [String], default: [] })
+  tokenBlacklist!: string[];
+
   @Prop({ default: Date.now })
   createdAt!: Date;
 }

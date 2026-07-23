@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
@@ -39,5 +40,12 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   findOneUser(@Param('id') userId: string) {
     return this.userService.findOneUser(userId);
+  }
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  logout(@UserType() userId: string, @Req() request: Request) {
+    const token = request.headers.authorization?.split(' ')[1] || '';
+    return this.authService.logout(userId, token);
   }
 }

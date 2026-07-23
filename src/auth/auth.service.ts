@@ -58,4 +58,17 @@ export class AuthService {
 
     return user;
   }
+
+  async logout(userId: string, token: string) {
+    // Add token to user's blacklist to destroy it server-side
+    await this.userModel.updateOne(
+      { id: userId },
+      { $push: { tokenBlacklist: token } },
+    );
+
+    return {
+      message: 'Logout successful - token destroyed',
+      statusCode: 200,
+    };
+  }
 }
