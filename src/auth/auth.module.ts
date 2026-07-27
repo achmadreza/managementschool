@@ -5,7 +5,7 @@ import { AuthController } from './auth.controller';
 import { UserController } from './user.controller';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { User, UserSchema } from './schemas/user.schema';
 import { RolePermissionModule } from '../role-permission/role-permission.module';
 

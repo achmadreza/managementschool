@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { User, UserSchema } from '../auth/schemas/user.schema';
-import { RolesGuard } from './guards/roles.guard';
 import { RolePermissionController } from './role-permission.controller';
 import { RolePermissionService } from './role-permission.service';
 import {
@@ -23,7 +22,7 @@ import {
     ]),
   ],
   controllers: [RolePermissionController],
-  providers: [RolesGuard, RolePermissionService, JwtAuthGuard],
-  exports: [RolesGuard, RolePermissionService, MongooseModule],
+  providers: [RolePermissionService, JwtAuthGuard],
+  exports: [RolePermissionService, MongooseModule],
 })
 export class RolePermissionModule {}
