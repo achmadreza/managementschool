@@ -56,7 +56,7 @@ export class CreateUserDto {
   password: string | undefined;
 
   @ApiPropertyOptional({
-    example: '+62 812 3456 7890',
+    example: '+6281234567890',
     description: 'Optional phone number',
   })
   @IsOptional()

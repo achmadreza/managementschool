@@ -135,7 +135,7 @@ export class UpdateStudentDto {
   emailParent?: string;
 
   @ApiProperty({
-    example: '+62 812 3456 7890',
+    example: '+6281234567890',
     description: 'Parent/guardian phone number',
     required: false,
   })
@@ -156,8 +156,8 @@ export class UpdateStudentDto {
   schoolYear?: string;
 
   @ApiProperty({
-    example: '3276012345678901',
-    description: 'Family card number / path reference',
+    example: 'kk.pdf',
+    description: 'Family card / path reference',
     required: false,
   })
   @IsString()

@@ -98,7 +98,7 @@ export class CreateStudentDto {
   emailParent!: string;
 
   @ApiProperty({
-    example: '+62 812 345 67890',
+    example: '+6281234567890',
     description: 'Parent/guardian phone number',
   })
   @Transform(({ value }) => normalizePhoneNumber(value))
