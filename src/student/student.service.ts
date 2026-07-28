@@ -18,7 +18,10 @@ export class StudentService {
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     try {
-      const student = new this.studentModel(createStudentDto);
+      const student = new this.studentModel({
+        ...createStudentDto,
+        createdAt: new Date(),
+      });
       return await student.save();
     } catch (error: unknown) {
       if (

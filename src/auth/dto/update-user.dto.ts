@@ -8,7 +8,20 @@ import {
   Matches,
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { UserRole } from '../enums/user-role.enum';
+
+const normalizePhoneNumber = (value: unknown): unknown => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmed = value.trim();
+  const hasLeadingPlus = trimmed.startsWith('+');
+  const digitsOnly = trimmed.replace(/\D/g, '');
+
+  return hasLeadingPlus ? `+${digitsOnly}` : digitsOnly;
+};
 
 export class UpdateUserDto {
   @ApiPropertyOptional({
@@ -34,6 +47,7 @@ export class UpdateUserDto {
     description: 'Phone number',
   })
   @IsOptional()
+  @Transform(({ value }) => normalizePhoneNumber(value))
   @IsString()
   @Matches(/^[0-9\-+\s()]*$/, { message: 'Invalid phone format' })
   phone?: string;

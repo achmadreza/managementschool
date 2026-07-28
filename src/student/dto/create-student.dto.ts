@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsDateString,
   IsNotEmpty,
   IsString,
@@ -6,6 +7,20 @@ import {
   MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { StudentStatus } from '../schemas/student.schema';
+
+const normalizePhoneNumber = (value: unknown): unknown => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmed = value.trim();
+  const hasLeadingPlus = trimmed.startsWith('+');
+  const digitsOnly = trimmed.replace(/\D/g, '');
+
+  return hasLeadingPlus ? `+${digitsOnly}` : digitsOnly;
+};
 
 export class CreateStudentDto {
   @ApiProperty({ example: 'Budi Santoso', description: 'Student full name' })
@@ -28,11 +43,31 @@ export class CreateStudentDto {
   @MaxLength(20)
   gender!: string;
 
+  @ApiProperty({ example: 'Islam', description: 'Student religion' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(50)
+  religion!: string;
+
+  @ApiProperty({
+    enum: StudentStatus,
+    example: StudentStatus.PROCESS,
+    description: 'Student registration status',
+  })
+  @IsEnum(StudentStatus)
+  status!: StudentStatus;
+
   @ApiProperty({ example: 'Jl. Melati No. 1', description: 'Home address' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
   address!: string;
+
+  @ApiProperty({ example: 'Bandung', description: 'Student birth place' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
+  birthPlace!: string;
 
   @ApiProperty({
     example: '2015-03-12',
@@ -63,9 +98,10 @@ export class CreateStudentDto {
   emailParent!: string;
 
   @ApiProperty({
-    example: '+62 812 3456 7890',
+    example: '+62 812 345 67890',
     description: 'Parent/guardian phone number',
   })
+  @Transform(({ value }) => normalizePhoneNumber(value))
   @IsString()
   @IsNotEmpty()
   @MaxLength(30)

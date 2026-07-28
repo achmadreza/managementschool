@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsDateString,
   IsOptional,
   IsString,
@@ -6,6 +7,20 @@ import {
   MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { StudentStatus } from '../schemas/student.schema';
+
+const normalizePhoneNumber = (value: unknown): unknown => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmed = value.trim();
+  const hasLeadingPlus = trimmed.startsWith('+');
+  const digitsOnly = trimmed.replace(/\D/g, '');
+
+  return hasLeadingPlus ? `+${digitsOnly}` : digitsOnly;
+};
 
 export class UpdateStudentDto {
   @ApiProperty({
@@ -41,6 +56,26 @@ export class UpdateStudentDto {
   gender?: string;
 
   @ApiProperty({
+    example: 'Islam',
+    description: 'Student religion',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(50)
+  religion?: string;
+
+  @ApiProperty({
+    enum: StudentStatus,
+    example: StudentStatus.PROCESS,
+    description: 'Student registration status',
+    required: false,
+  })
+  @IsEnum(StudentStatus)
+  @IsOptional()
+  status?: StudentStatus;
+
+  @ApiProperty({
     example: 'Jl. Melati No. 1',
     description: 'Home address',
     required: false,
@@ -49,6 +84,16 @@ export class UpdateStudentDto {
   @IsOptional()
   @MaxLength(255)
   address?: string;
+
+  @ApiProperty({
+    example: 'Bandung',
+    description: 'Student birth place',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  birthPlace?: string;
 
   @ApiProperty({
     example: '2015-03-12',
@@ -94,6 +139,7 @@ export class UpdateStudentDto {
     description: 'Parent/guardian phone number',
     required: false,
   })
+  @Transform(({ value }) => normalizePhoneNumber(value))
   @IsString()
   @IsOptional()
   @MaxLength(30)
