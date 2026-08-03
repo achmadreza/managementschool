@@ -8,6 +8,7 @@ import { Model, QueryFilter } from 'mongoose';
 import { Student, StudentDocument } from './schemas/student.schema';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { StudentStatus } from './schemas/student.schema';
 
 @Injectable()
 export class StudentService {
@@ -93,5 +94,17 @@ export class StudentService {
       throw new NotFoundException('Student not found');
     }
     return { message: 'Student deleted successfully' };
+  }
+
+  async updateStatus(id: string, status: StudentStatus): Promise<Student> {
+    const student = await this.studentModel
+      .findOneAndUpdate({ id }, { status }, { new: true })
+      .lean();
+
+    if (!student) {
+      throw new NotFoundException('Student not found');
+    }
+
+    return student;
   }
 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Param,
   Post,
   Put,
@@ -11,7 +12,10 @@ import {
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+import {
+  UpdateStudentDto,
+  UpdateStudentStatusDto,
+} from './dto/update-student.dto';
 
 @ApiTags('students')
 @Controller('students')
@@ -45,6 +49,15 @@ export class StudentController {
   @ApiOperation({ summary: 'Update student' })
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
     return this.studentService.update(id, updateStudentDto);
+  }
+
+  @Patch(':id/status')
+  @ApiOperation({ summary: 'Update student status' })
+  updateStatus(
+    @Param('id') id: string,
+    @Body() updateStudentStatusDto: UpdateStudentStatusDto,
+  ) {
+    return this.studentService.updateStatus(id, updateStudentStatusDto.status);
   }
 
   @Delete(':id')

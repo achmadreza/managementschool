@@ -185,3 +185,13 @@ export class UpdateStudentDto {
   @MaxLength(255)
   photo?: string;
 }
+
+export class UpdateStudentStatusDto {
+  @ApiProperty({
+    enum: StudentStatus,
+    example: StudentStatus.DONE,
+    description: 'New student registration status',
+  })
+  @IsEnum(StudentStatus)
+  status!: StudentStatus;
+}
