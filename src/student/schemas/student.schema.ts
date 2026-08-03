@@ -50,23 +50,28 @@ export class Student {
   // @Prop({ required: true, trim: true })
   // prevSchool!: string;
 
-  @Prop({ required: true, trim: true })
-  fatherName!: string;
+  // @Prop({ required: true, trim: true })
+  // fatherName!: string;
 
   // @Prop({ required: true, trim: true })
   // fatherPhoneNumber!: string;
 
-  @Prop({ required: true, trim: true })
-  motherName!: string;
+  // @Prop({ required: true, trim: true })
+  // motherName!: string;
 
   // @Prop({ required: true, trim: true })
   // motherPhoneNumber!: string;
+  @Prop({ required: false, trim: true })
+  parentId!: string;
 
   @Prop({ required: true, trim: true })
-  emailParent!: string;
+  parentEmail!: string;
 
   @Prop({ required: true, trim: true })
   phoneNumber!: string;
+
+  @Prop({ required: true, trim: true })
+  emergencyContact!: string;
 
   @Prop({ required: true, trim: true })
   schoolYear!: string;

@@ -89,17 +89,15 @@ export class CreateStudentDto {
   @IsDateString()
   birthdate!: string;
 
-  @ApiProperty({ example: 'Andi Santoso', description: 'Father name' })
+  @ApiProperty({
+    example: 'parent-001',
+    description: 'Parent user identifier',
+    required: false,
+  })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(100)
-  fatherName!: string;
-
-  @ApiProperty({ example: 'Siti Aminah', description: 'Mother name' })
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(100)
-  motherName!: string;
+  parentId?: string;
 
   @ApiProperty({
     example: 'parent@example.com',
@@ -108,7 +106,7 @@ export class CreateStudentDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  emailParent!: string;
+  parentEmail!: string;
 
   @ApiProperty({
     example: '+6281234567890',
@@ -119,6 +117,16 @@ export class CreateStudentDto {
   @IsNotEmpty()
   @MaxLength(30)
   phoneNumber!: string;
+
+  @ApiProperty({
+    example: '+6281122233344',
+    description: 'Emergency contact phone number',
+  })
+  @Transform(({ value }) => normalizePhoneNumber(value))
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(30)
+  emergencyContact!: string;
 
   @ApiProperty({ example: '2026/2027', description: 'Current school year' })
   @IsString()

@@ -4,11 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, QueryFilter } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hashPassword } from './password.util';
+import { UserRole } from './enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -53,8 +54,34 @@ export class UserService {
     return user.save();
   }
 
-  async getUsers() {
-    return this.userModel.find().select('-password -__v').lean();
+  async getUsers(filters?: { id?: string; email?: string; role?: string }) {
+    const query: QueryFilter<UserDocument> = {};
+
+    if (filters?.id?.trim()) {
+      query.id = filters.id.trim();
+    }
+
+    if (filters?.email?.trim()) {
+      query.email = {
+        $regex: filters.email.trim().toLowerCase(),
+        $options: 'i',
+      };
+    }
+
+    if (filters?.role?.trim()) {
+      const normalizedRole = filters.role.trim().toLowerCase();
+      const isValidRole = Object.values(UserRole).includes(
+        normalizedRole as UserRole,
+      );
+
+      if (!isValidRole) {
+        return [];
+      }
+
+      query.role = normalizedRole as UserRole;
+    }
+
+    return this.userModel.find(query).select('-password -__v').lean();
   }
 
   async findOneUser(identifier: string) {

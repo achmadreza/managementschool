@@ -5,10 +5,16 @@ import {
   Delete,
   Param,
   Body,
+  Query,
   UseGuards,
   HttpCode,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -22,8 +28,23 @@ export class UserController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get all users' })
-  getAllUsers() {
-    return this.userService.getUsers();
+  @ApiQuery({ name: 'id', required: false, description: 'Filter by user ID' })
+  @ApiQuery({
+    name: 'email',
+    required: false,
+    description: 'Filter by email using LIKE pattern (regex)',
+  })
+  @ApiQuery({
+    name: 'role',
+    required: false,
+    description: 'Filter by role (admin, teacher, parent)',
+  })
+  getAllUsers(
+    @Query('id') id?: string,
+    @Query('email') email?: string,
+    @Query('role') role?: string,
+  ) {
+    return this.userService.getUsers({ id, email, role });
   }
 
   @Get(':id')
