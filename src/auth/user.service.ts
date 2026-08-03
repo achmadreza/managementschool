@@ -57,9 +57,11 @@ export class UserService {
     return this.userModel.find().select('-password -__v').lean();
   }
 
-  async findOneUser(userId: string) {
+  async findOneUser(identifier: string) {
     const user = await this.userModel
-      .findOne({ id: userId })
+      .findOne({
+        $or: [{ id: identifier }, { email: identifier.toLowerCase() }],
+      })
       .select('-password -__v')
       .lean();
 

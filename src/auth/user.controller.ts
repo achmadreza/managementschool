@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Put,
   Delete,
   Param,
@@ -29,9 +28,9 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Get user by ID' })
-  getUser(@Param('id') userId: string) {
-    return this.userService.findOneUser(userId);
+  @ApiOperation({ summary: 'Get user by ID or email' })
+  getUser(@Param('id') identifier: string) {
+    return this.userService.findOneUser(identifier);
   }
 
   @Put(':id')

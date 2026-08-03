@@ -5,5 +5,6 @@ export class SigninResponseDto {
     fullName: string;
     email: string;
     role: string;
+    schoolCode: string;
   };
 }

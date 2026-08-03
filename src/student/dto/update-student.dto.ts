@@ -24,6 +24,16 @@ const normalizePhoneNumber = (value: unknown): unknown => {
 
 export class UpdateStudentDto {
   @ApiProperty({
+    example: 'PETANG03',
+    description: 'School code associated with this student',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  schoolCode?: string;
+
+  @ApiProperty({
     example: 'Budi Santoso',
     description: 'Student full name',
     required: false,

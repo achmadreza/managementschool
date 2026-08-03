@@ -2,6 +2,7 @@ import {
   IsEnum,
   IsDateString,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -23,6 +24,16 @@ const normalizePhoneNumber = (value: unknown): unknown => {
 };
 
 export class CreateStudentDto {
+  @ApiProperty({
+    example: 'PETANG03',
+    description: 'School code associated with this student',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  schoolCode?: string;
+
   @ApiProperty({ example: 'Budi Santoso', description: 'Student full name' })
   @IsString()
   @IsNotEmpty()
@@ -53,9 +64,11 @@ export class CreateStudentDto {
     enum: StudentStatus,
     example: StudentStatus.PROCESS,
     description: 'Student registration status',
+    required: false,
   })
   @IsEnum(StudentStatus)
-  status!: StudentStatus;
+  @IsOptional()
+  status?: StudentStatus;
 
   @ApiProperty({ example: 'Jl. Melati No. 1', description: 'Home address' })
   @IsString()

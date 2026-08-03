@@ -15,6 +15,9 @@ export class Student {
   @Prop({ required: true, unique: true, default: () => randomUUID() })
   id!: string;
 
+  @Prop({ type: String, default: null })
+  schoolCode?: string;
+
   @Prop({ required: true, trim: true })
   name!: string;
 

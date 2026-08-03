@@ -14,12 +14,14 @@ type JwtPayload = {
   sub: string;
   email: string;
   role: string;
+  schoolCode?: string;
 };
 
 type RequestUser = {
   id: string;
   email: string;
   role: string;
+  schoolCode?: string;
 };
 
 @Injectable()
@@ -61,6 +63,7 @@ export class JwtAuthGuard implements CanActivate {
         id: payload.sub,
         email: payload.email,
         role: payload.role,
+        schoolCode: payload.schoolCode || '',
       };
       return true;
     } catch {
