@@ -17,7 +17,7 @@ import { SigninDto } from './dto/signin.dto';
 import { ForgetPasswordDto } from './dto/forget-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { UserType } from './decorators/user-type.decorator';
+import { UserType } from '../decorators/user-type.decorator';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('auth')
