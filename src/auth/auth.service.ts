@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { SigninDto } from './dto/signin.dto';
 import { SigninResponseDto } from './dto/signin-response.dto';
+import { hashPassword, verifyPassword } from './password.util';
 
 @Injectable()
 export class AuthService {
@@ -22,8 +23,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    // In production, use bcrypt to compare hashed passwords
-    if (user.password !== password) {
+    const isPasswordValid = await verifyPassword(password, user.password);
+
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
@@ -119,11 +121,13 @@ export class AuthService {
       throw new UnauthorizedException('Invalid or expired reset token');
     }
 
+    const hashedPassword = await hashPassword(newPassword);
+
     // Update password and clear reset token
     await this.userModel.updateOne(
       { _id: user._id },
       {
-        password: newPassword,
+        password: hashedPassword,
         resetToken: null,
         resetTokenExpiry: null,
       },
@@ -146,13 +150,22 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
-    // Verify current password
-    if (user.password !== currentPassword) {
+    const isCurrentPasswordValid = await verifyPassword(
+      currentPassword,
+      user.password,
+    );
+
+    if (!isCurrentPasswordValid) {
       throw new UnauthorizedException('Current password is incorrect');
     }
 
+    const hashedNewPassword = await hashPassword(newPassword);
+
     // Update to new password
-    await this.userModel.updateOne({ id: userId }, { password: newPassword });
+    await this.userModel.updateOne(
+      { id: userId },
+      { password: hashedNewPassword },
+    );
 
     return {
       message: 'Password changed successfully',

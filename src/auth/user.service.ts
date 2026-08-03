@@ -8,6 +8,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { hashPassword } from './password.util';
 
 @Injectable()
 export class UserService {
@@ -28,11 +29,19 @@ export class UserService {
       throw new ConflictException('Passwords do not match');
     }
 
+    if (!createUserDto.password) {
+      throw new ConflictException('Password is required');
+    }
+
+    const password = createUserDto.password;
+
+    const hashedPassword = await hashPassword(password);
+
     const user = new this.userModel({
       id: createUserDto.id ?? crypto.randomUUID(),
       fullName: createUserDto.fullName,
       email: createUserDto.email,
-      password: createUserDto.password,
+      password: hashedPassword,
       phone: createUserDto.phone,
       schoolCode: createUserDto.schoolCode,
       googleOAuthID: createUserDto.googleOAuthID,
