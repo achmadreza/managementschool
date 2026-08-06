@@ -67,6 +67,9 @@ export class Student {
   @Prop({ required: true, trim: true })
   parentEmail!: string;
 
+  @Prop({ required: false, trim: true })
+  parentName!: string;
+
   @Prop({ required: true, trim: true })
   phoneNumber!: string;
 

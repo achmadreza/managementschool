@@ -25,10 +25,10 @@ const normalizePhoneNumber = (value: unknown): unknown => {
 };
 
 export class CreateUserDto {
-  @ApiPropertyOptional({
-    example: 'u-9b8a7c6d',
-    description: 'Unique user id. Auto-generated if omitted.',
-  })
+  // @ApiPropertyOptional({
+  //   example: 'u-9b8a7c6d',
+  //   description: 'Unique user id. Auto-generated if omitted.',
+  // })
   @IsOptional()
   @IsString()
   id?: string;

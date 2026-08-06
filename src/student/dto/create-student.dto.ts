@@ -109,6 +109,16 @@ export class CreateStudentDto {
   parentEmail!: string;
 
   @ApiProperty({
+    example: 'Siti Aminah',
+    description: 'Parent or guardian full name',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  parentName?: string;
+
+  @ApiProperty({
     example: '+6281234567890',
     description: 'Parent/guardian phone number',
   })
