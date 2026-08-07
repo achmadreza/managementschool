@@ -66,16 +66,6 @@ export class UpdateStudentDto {
   gender?: string;
 
   @ApiProperty({
-    example: 'Islam',
-    description: 'Student religion',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  @MaxLength(50)
-  religion?: string;
-
-  @ApiProperty({
     enum: StudentStatus,
     example: StudentStatus.PROCESS,
     description: 'Student registration status',

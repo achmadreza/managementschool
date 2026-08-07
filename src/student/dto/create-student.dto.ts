@@ -54,12 +54,6 @@ export class CreateStudentDto {
   @MaxLength(20)
   gender!: string;
 
-  @ApiProperty({ example: 'Islam', description: 'Student religion' })
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(50)
-  religion!: string;
-
   @ApiProperty({
     enum: StudentStatus,
     example: StudentStatus.PROCESS,

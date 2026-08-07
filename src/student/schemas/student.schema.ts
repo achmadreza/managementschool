@@ -27,8 +27,8 @@ export class Student {
   @Prop({ required: true, trim: true })
   gender!: string;
 
-  @Prop({ required: true, trim: true })
-  religion!: string;
+  // @Prop({ required: true, trim: true })
+  // religion!: string;
 
   @Prop({
     required: true,
