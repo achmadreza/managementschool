@@ -19,6 +19,16 @@ export class StudentService {
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     try {
+      const getStudent = await this.studentModel
+        .findOne({
+          parentId: createStudentDto.parentId,
+          name: createStudentDto.name.trim(),
+        })
+        .lean();
+      if (getStudent) {
+        throw new ConflictException('Student already exists');
+      }
+
       const student = new this.studentModel({
         ...createStudentDto,
         createdAt: new Date(),
