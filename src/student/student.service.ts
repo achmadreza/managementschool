@@ -5,10 +5,19 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, QueryFilter } from 'mongoose';
+import { Request } from 'express';
 import { Student, StudentDocument } from './schemas/student.schema';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentStatus } from './schemas/student.schema';
+import { UserRole } from 'src/auth/enums/user-role.enum';
+
+interface RequestWithUser extends Request {
+  user?: {
+    id?: string;
+    role?: UserRole;
+  };
+}
 
 @Injectable()
 export class StudentService {
@@ -51,12 +60,15 @@ export class StudentService {
     }
   }
 
-  async findAll(q?: string): Promise<Student[]> {
+  async findAll(req: RequestWithUser, q?: string): Promise<Student[]> {
     const query: QueryFilter<StudentDocument> = {};
     if (q && q.trim()) {
       const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const regex = new RegExp(escaped, 'i');
       query.$or = [{ name: regex }, { id: regex }, { class: regex }];
+    }
+    if ((req.user?.role as UserRole) === UserRole.PARENT) {
+      query.parentId = req.user?.id;
     }
     return await this.studentModel.find(query).lean();
   }

@@ -92,4 +92,13 @@ export class BillingController {
   delete(@Param('id') id: string) {
     return this.billingService.delete(id);
   }
+
+  @Post(':id/upload')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Upload a base64 payment attachment for a billing record',
+  })
+  uploadBillingRecords(@Param('id') id: string, @Body('file') file: string) {
+    return this.billingService.uploadBillingRecords(id, file);
+  }
 }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -145,6 +146,34 @@ export class BillingService {
   async updateStatus(id: string, status: BillingStatus): Promise<Billing> {
     const billing = await this.billingModel
       .findOneAndUpdate({ id }, { status }, { new: true })
+      .lean();
+
+    if (!billing) {
+      throw new NotFoundException('Billing not found');
+    }
+
+    return billing;
+  }
+  async uploadBillingRecords(id: string, file: string): Promise<Billing> {
+    if (!file || typeof file !== 'string') {
+      throw new BadRequestException('A base64 payment file is required');
+    }
+
+    const base64 = file.replace(/^data:[^;]+;base64,/, '').trim();
+    if (
+      !base64 ||
+      base64.length % 4 !== 0 ||
+      !/^[A-Za-z0-9+/]+={0,2}$/.test(base64)
+    ) {
+      throw new BadRequestException('File must be a valid base64 string');
+    }
+
+    const billing = await this.billingModel
+      .findOneAndUpdate(
+        { id },
+        { payment: file, updatedAt: new Date() },
+        { new: true },
+      )
       .lean();
 
     if (!billing) {

@@ -9,7 +9,9 @@ import {
   Put,
   Query,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -38,8 +40,8 @@ export class StudentController {
     required: false,
     description: 'Search keyword for student name, id, or class',
   })
-  findAll(@Query('q') q?: string) {
-    return this.studentService.findAll(q);
+  findAll(@Req() req: Request, @Query('q') q?: string) {
+    return this.studentService.findAll(req, q);
   }
 
   @Get(':id')

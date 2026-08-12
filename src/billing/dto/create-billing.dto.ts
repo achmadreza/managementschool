@@ -29,14 +29,14 @@ export class PaymentItemDto {
 }
 
 export class CreateBillingDto {
-  //   @ApiProperty({
-  //     example: 'INV-2026-0001',
-  //     description: 'Unique invoice number',
-  //   })
-  //   @IsString()
-  //   @IsNotEmpty()
-  //   @MaxLength(100)
-  //   invoiceNumber!: string;
+  @ApiProperty({
+    example: 'INV-2026-0001',
+    description: 'Unique invoice number',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
+  invoiceNumber!: string;
 
   @ApiProperty({
     example: 'student-001',
@@ -47,35 +47,55 @@ export class CreateBillingDto {
   @MaxLength(100)
   studentId!: string;
 
-  //   @ApiProperty({
-  //     example: 'SCH001',
-  //     description: 'Optional school code',
-  //     required: false,
-  //   })
-  //   @IsString()
-  //   @IsOptional()
-  //   @MaxLength(100)
-  //   schoolCode?: string;
+  @ApiProperty({
+    example: 'Budi Santoso',
+    description: 'Optional student full name',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  studentName?: string;
 
-  //   @ApiProperty({
-  //     example: 'parent-001',
-  //     description: 'Optional parent user identifier',
-  //     required: false,
-  //   })
-  //   @IsString()
-  //   @IsOptional()
-  //   @MaxLength(100)
-  //   parentId?: string;
+  @ApiProperty({
+    example: '5A',
+    description: 'Optional student class',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(50)
+  studentClass?: string;
 
-  //   @ApiProperty({
-  //     example: 'parent@example.com',
-  //     description: 'Optional parent email address',
-  //     required: false,
-  //   })
-  //   @IsString()
-  //   @IsOptional()
-  //   @MaxLength(255)
-  //   parentEmail?: string;
+  @ApiProperty({
+    example: 'SCH001',
+    description: 'Optional school code',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  schoolCode?: string;
+
+  @ApiProperty({
+    example: 'parent-001',
+    description: 'Optional parent user identifier',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  parentId?: string;
+
+  @ApiProperty({
+    example: 'parent@example.com',
+    description: 'Optional parent email address',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(255)
+  parentEmail?: string;
 
   @ApiProperty({
     example: 'Registration fee for semester 1',
@@ -124,4 +144,14 @@ export class CreateBillingDto {
   @IsDate()
   @IsOptional()
   paidAt?: Date;
+
+  @ApiProperty({
+    example: 'bank-transfer',
+    description: 'Optional payment method or reference',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  payment?: string;
 }

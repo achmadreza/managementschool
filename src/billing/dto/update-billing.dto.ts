@@ -134,6 +134,16 @@ export class UpdateBillingDto {
   @IsDate()
   @IsOptional()
   paidAt?: Date;
+
+  @ApiProperty({
+    example: 'bank-transfer',
+    description: 'Optional payment method or reference',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  payment?: string;
 }
 
 export class UpdateBillingStatusDto {

@@ -67,6 +67,9 @@ export class Billing {
 
   @Prop({ default: Date.now })
   updatedAt!: Date;
+
+  @Prop({ type: String, default: null, required: false })
+  payment!: string;
 }
 
 export const BillingSchema = SchemaFactory.createForClass(Billing);
