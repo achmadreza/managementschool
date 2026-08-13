@@ -17,6 +17,7 @@ import {
   UpdateBillingDto,
   UpdateBillingStatusDto,
 } from './dto/update-billing.dto';
+import { UploadBillingFileDto } from './dto/upload-billing-file.dto';
 import { BillingStatus } from './schemas/billing.schema';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
@@ -98,7 +99,13 @@ export class BillingController {
   @ApiOperation({
     summary: 'Upload a base64 payment attachment for a billing record',
   })
-  uploadBillingRecords(@Param('id') id: string, @Body('file') file: string) {
-    return this.billingService.uploadBillingRecords(id, file);
+  uploadBillingRecords(
+    @Param('id') id: string,
+    @Body() uploadBillingFileDto: UploadBillingFileDto,
+  ) {
+    return this.billingService.uploadBillingRecords(
+      id,
+      uploadBillingFileDto.file,
+    );
   }
 }
