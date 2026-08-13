@@ -8,7 +8,7 @@ import { SchoolModule } from './school/school.module';
 import { StudentModule } from './student/student.module';
 import { BillingModule } from './billing/billing.module';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { TrialClassModule } from './trial-class/trial-class.module';
 
 @Module({
   imports: [
@@ -29,6 +29,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
     SchoolModule,
     StudentModule,
     BillingModule,
+    TrialClassModule,
   ],
   controllers: [AppController],
   providers: [AppService],
