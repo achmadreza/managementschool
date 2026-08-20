@@ -22,6 +22,9 @@ export class TrialClass {
   @Prop({ required: true, trim: true })
   studentId!: string;
 
+  @Prop({ required: true, trim: true })
+  teacherId!: string;
+
   @Prop({ required: true })
   registeredAt!: Date;
 

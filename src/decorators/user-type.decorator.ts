@@ -1,9 +1,12 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
+import { UserRole } from 'src/auth/enums/user-role.enum';
 
 type RequestWithUser = Request & {
   user?: {
     id?: string;
+    role?: UserRole;
+    schoolCode?: string;
   };
 };
 
@@ -14,9 +17,9 @@ type RequestWithSchoolCode = Request & {
 };
 
 export const UserType = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext): string | undefined => {
+  (_data: unknown, ctx: ExecutionContext): RequestWithUser['user'] => {
     const request = ctx.switchToHttp().getRequest<RequestWithUser>();
-    return request.user?.id;
+    return request.user;
   },
 );
 export const SchoolCode = createParamDecorator(

@@ -22,6 +22,12 @@ export class UpdateTrialClassDto {
   @MaxLength(100)
   studentId?: string;
 
+  @ApiProperty({ example: 'base64', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  teacherId?: string;
+
   @ApiProperty({ example: '2026-07-24T00:00:00.000Z', required: false })
   @Type(() => Date)
   @IsDate()
