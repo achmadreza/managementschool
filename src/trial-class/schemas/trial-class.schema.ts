@@ -34,6 +34,9 @@ export class TrialClass {
   @Prop({ required: false, trim: true })
   location?: string;
 
+  @Prop({ required: false, trim: true })
+  notes?: string;
+
   @Prop({
     required: true,
     enum: Object.values(TrialClassStatus),

@@ -116,7 +116,7 @@ export class TrialClassService {
       > | null;
     }
   > {
-    let query: QueryFilter<TrialClassDocument> = { id };
+    const query: QueryFilter<TrialClassDocument> = { id };
     if (req.user?.role === UserRole.PARENT) {
       query.parentId = req.user?.id;
     }

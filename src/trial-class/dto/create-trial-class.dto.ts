@@ -50,6 +50,13 @@ export class CreateTrialClassDto {
   @MaxLength(255)
   location?: string;
 
+  @ApiProperty({ example: 'Suka menggambar', required: false })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  @MaxLength(1000)
+  notes?: string;
+
   @ApiProperty({ enum: TrialClassStatus, required: false })
   @IsEnum(TrialClassStatus)
   @IsOptional()
