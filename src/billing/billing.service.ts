@@ -145,7 +145,11 @@ export class BillingService {
 
   async updateStatus(id: string, status: BillingStatus): Promise<Billing> {
     const billing = await this.billingModel
-      .findOneAndUpdate({ id }, { status }, { new: true })
+      .findOneAndUpdate(
+        { id },
+        { status, updatedAt: new Date() },
+        { new: true },
+      )
       .lean();
 
     if (!billing) {
@@ -171,7 +175,7 @@ export class BillingService {
     const billing = await this.billingModel
       .findOneAndUpdate(
         { id },
-        { payment: file, updatedAt: new Date() },
+        { payment: file, updatedAt: new Date(), paidAt: new Date() },
         { new: true },
       )
       .lean();
