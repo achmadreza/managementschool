@@ -28,6 +28,9 @@ export class TrialClass {
   @Prop({ required: true })
   registeredAt!: Date;
 
+  @Prop({ required: false })
+  scheduledAt!: Date;
+
   @Prop({
     required: true,
     enum: Object.values(TrialClassStatus),

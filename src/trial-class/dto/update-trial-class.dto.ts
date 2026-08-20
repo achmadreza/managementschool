@@ -34,6 +34,15 @@ export class UpdateTrialClassDto {
   @IsOptional()
   registeredAt?: Date;
 
+  @ApiProperty({
+    example: '2026-07-25T10:00:00.000Z',
+    required: false,
+  })
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  scheduledAt?: Date;
+
   @ApiProperty({ enum: TrialClassStatus, required: false })
   @IsEnum(TrialClassStatus)
   @IsOptional()
