@@ -142,7 +142,7 @@ export class TrialClassService {
 
   async update(
     id: string,
-    updateTrialClassDto: UpdateTrialClassDto,
+    updateTrialClassDto: Partial<UpdateTrialClassDto>,
   ): Promise<TrialClass> {
     const trialClass = await this.trialClassModel
       .findOneAndUpdate({ id }, updateTrialClassDto, { new: true })
