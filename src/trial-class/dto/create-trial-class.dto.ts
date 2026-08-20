@@ -39,20 +39,17 @@ export class CreateTrialClassDto {
     required: false,
   })
   @Type(() => Date)
-  @IsDate()
   @IsOptional()
   scheduledAt?: Date;
 
   @ApiProperty({ example: 'Kelas 5A', required: false })
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
   @MaxLength(255)
   location?: string;
 
   @ApiProperty({ example: 'Suka menggambar', required: false })
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
   @MaxLength(1000)
   notes?: string;
