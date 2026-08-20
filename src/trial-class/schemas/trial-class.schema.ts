@@ -31,6 +31,9 @@ export class TrialClass {
   @Prop({ required: false })
   scheduledAt!: Date;
 
+  @Prop({ required: false, trim: true })
+  location?: string;
+
   @Prop({
     required: true,
     enum: Object.values(TrialClassStatus),

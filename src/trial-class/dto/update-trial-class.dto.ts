@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
@@ -42,6 +43,13 @@ export class UpdateTrialClassDto {
   @IsDate()
   @IsOptional()
   scheduledAt?: Date;
+
+  @ApiProperty({ example: 'Kelas 5A', required: false })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  @MaxLength(255)
+  location?: string;
 
   @ApiProperty({ enum: TrialClassStatus, required: false })
   @IsEnum(TrialClassStatus)

@@ -43,6 +43,13 @@ export class CreateTrialClassDto {
   @IsOptional()
   scheduledAt?: Date;
 
+  @ApiProperty({ example: 'Kelas 5A', required: false })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  @MaxLength(255)
+  location?: string;
+
   @ApiProperty({ enum: TrialClassStatus, required: false })
   @IsEnum(TrialClassStatus)
   @IsOptional()
