@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -40,14 +41,18 @@ export class TrialClassController {
     description: 'Search student, parent, phone, or program/class',
   })
   @ApiQuery({ name: 'status', required: false, enum: TrialClassStatus })
-  findAll(@Query('q') q?: string, @Query('status') status?: TrialClassStatus) {
-    return this.trialClassService.findAll(q, status);
+  findAll(
+    @Req() req,
+    @Query('q') q?: string,
+    @Query('status') status?: TrialClassStatus,
+  ) {
+    return this.trialClassService.findAll(req, q, status);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a trial class registration by ID' })
-  findOne(@Param('id') id: string) {
-    return this.trialClassService.findOne(id);
+  findOne(@Req() req, @Param('id') id: string) {
+    return this.trialClassService.findOne(req, id);
   }
 
   @Put(':id')

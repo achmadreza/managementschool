@@ -29,14 +29,14 @@ export class PaymentItemDto {
 }
 
 export class CreateBillingDto {
-  @ApiProperty({
-    example: 'INV-2026-0001',
-    description: 'Unique invoice number',
-  })
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(100)
-  invoiceNumber!: string;
+  // @ApiProperty({
+  //   example: 'INV-2026-0001',
+  //   description: 'Unique invoice number',
+  // })
+  // @IsString()
+  // @IsOptional()
+  // @MaxLength(100)
+  // invoiceNumber?: string;
 
   @ApiProperty({
     example: 'student-001',

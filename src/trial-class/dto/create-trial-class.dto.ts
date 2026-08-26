@@ -11,22 +11,48 @@ import {
 import { TrialClassStatus } from '../schemas/trial-class.schema';
 
 export class CreateTrialClassDto {
-  @ApiProperty({ example: 'parent-001' })
+  @ApiProperty({ example: 'uuid' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
   parentId!: string;
 
-  @ApiProperty({ example: 'student-001' })
+  @ApiProperty({ example: 'uuid' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
   studentId!: string;
 
+  @ApiProperty({ example: 'uuid' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
+  teacherId!: string;
+
   @ApiProperty({ example: '2026-07-24T00:00:00.000Z' })
   @Type(() => Date)
   @IsDate()
   registeredAt!: Date;
+
+  @ApiProperty({
+    example: '2026-07-25T10:00:00.000Z',
+    required: false,
+  })
+  @Type(() => Date)
+  @IsOptional()
+  scheduledAt?: Date;
+
+  @ApiProperty({ example: 'Kelas 5A', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(255)
+  location?: string;
+
+  @ApiProperty({ example: 'Suka menggambar', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  notes?: string;
 
   @ApiProperty({ enum: TrialClassStatus, required: false })
   @IsEnum(TrialClassStatus)

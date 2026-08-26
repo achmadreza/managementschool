@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
@@ -22,11 +23,37 @@ export class UpdateTrialClassDto {
   @MaxLength(100)
   studentId?: string;
 
+  @ApiProperty({ example: 'base64', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  teacherId?: string;
+
   @ApiProperty({ example: '2026-07-24T00:00:00.000Z', required: false })
   @Type(() => Date)
   @IsDate()
   @IsOptional()
   registeredAt?: Date;
+
+  @ApiProperty({
+    example: '2026-07-25T10:00:00.000Z',
+    required: false,
+  })
+  @Type(() => Date)
+  @IsOptional()
+  scheduledAt?: Date;
+
+  @ApiProperty({ example: 'Kelas 5A', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(255)
+  location?: string;
+
+  @ApiProperty({ example: 'Suka menggambar', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  notes?: string;
 
   @ApiProperty({ enum: TrialClassStatus, required: false })
   @IsEnum(TrialClassStatus)
