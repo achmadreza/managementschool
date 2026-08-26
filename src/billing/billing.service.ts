@@ -171,7 +171,11 @@ export class BillingService {
     const billing = await this.billingModel
       .findOneAndUpdate(
         { id },
-        { payment: file, updatedAt: new Date() },
+        {
+          payment: file,
+          updatedAt: new Date(),
+          status: BillingStatus.WAITING_APPROVAL,
+        },
         { new: true },
       )
       .lean();

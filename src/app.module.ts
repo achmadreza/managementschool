@@ -9,6 +9,7 @@ import { StudentModule } from './student/student.module';
 import { BillingModule } from './billing/billing.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TrialClassModule } from './trial-class/trial-class.module';
+import { JournalModule } from './journal/journal.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TrialClassModule } from './trial-class/trial-class.module';
     StudentModule,
     BillingModule,
     TrialClassModule,
+    JournalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

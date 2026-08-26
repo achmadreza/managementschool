@@ -6,6 +6,7 @@ export type BillingDocument = HydratedDocument<Billing>;
 
 export enum BillingStatus {
   WAITING = 'WAITING',
+  WAITING_APPROVAL = 'WAITING_APPROVAL',
   PAID = 'PAID',
   REJECTED = 'REJECTED',
   //   OVERDUE = 'OVERDUE',
