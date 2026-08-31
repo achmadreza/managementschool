@@ -17,6 +17,12 @@ export class UpdateJournalDto {
   @ApiProperty({ required: false, nullable: true })
   @IsOptional()
   @IsString()
+  @MaxLength(255)
+  title?: string | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  @IsOptional()
+  @IsString()
   @MaxLength(5000)
   message?: string | null;
 

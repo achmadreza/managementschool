@@ -21,6 +21,9 @@ export class Journal {
   status!: JournalStatus;
 
   @Prop({ type: String, trim: true, default: null })
+  title!: string;
+
+  @Prop({ type: String, trim: true, default: null })
   message!: string;
 
   @Prop({ type: String, default: null, trim: true })

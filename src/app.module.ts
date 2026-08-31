@@ -10,6 +10,7 @@ import { BillingModule } from './billing/billing.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TrialClassModule } from './trial-class/trial-class.module';
 import { JournalModule } from './journal/journal.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { JournalModule } from './journal/journal.module';
     BillingModule,
     TrialClassModule,
     JournalModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

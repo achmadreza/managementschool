@@ -30,6 +30,17 @@ export class CreateJournalDto {
   status!: JournalStatus;
 
   @ApiProperty({
+    example: 'Belajar menjaga kebersihan lingkungan',
+    description: 'Optional journal title',
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  title?: string | null;
+
+  @ApiProperty({
     example: 'Anak-anak belajar membuang sampah pada tempatnya dengan baik',
     description: 'Optional journal message',
     required: false,
