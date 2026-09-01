@@ -15,7 +15,7 @@ export class Media {
   @Prop({ required: false, trim: true })
   file!: string;
 
-  @Prop({ required: false, trim: true, default: null })
+  @Prop({ type: String, required: false, trim: true, default: null })
   description?: string | null;
 
   @Prop({ default: Date.now })
