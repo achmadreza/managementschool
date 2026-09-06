@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TrialClassModule } from './trial-class/trial-class.module';
 import { JournalModule } from './journal/journal.module';
 import { MediaModule } from './media/media.module';
+import { StudentNoteModule } from './student-note/student-note.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { MediaModule } from './media/media.module';
     TrialClassModule,
     JournalModule,
     MediaModule,
+    StudentNoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
