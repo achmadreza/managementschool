@@ -175,7 +175,7 @@ export class BillingService {
           payment: file,
           updatedAt: new Date(),
           status: BillingStatus.WAITING_APPROVAL,
-          PaidAt: new Date(),
+          paidAt: new Date(),
         },
         { new: true },
       )

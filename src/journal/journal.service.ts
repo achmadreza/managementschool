@@ -31,18 +31,19 @@ export class JournalService {
   ): Promise<Journal[]> {
     const query: QueryFilter<JournalDocument> = {};
 
-    if ((req.user?.role as UserRole) === UserRole.PARENT) {
-      const students = await this.studentModel
-        .find({ parentId: req.user.id })
-        .select({ class: 1 })
-        .lean();
-      const studentClasses = [
-        ...new Set(students.map((student) => student.class)),
-      ];
+    // if ((req.user?.role as UserRole) === UserRole.PARENT) {
+    // const students = await this.studentModel
+    //   .find({ parentId: req.user.id })
+    //   .select({ class: 1 })
+    //   .lean();
+    // const studentClasses = [
+    //   ...new Set(students.map((student) => student.class)),
+    // ];
 
-      query.target = { $in: studentClasses };
-      query.status = JournalStatus.PUBLISHED;
-    } else if (target) {
+    // query.target = { $in: studentClasses };
+    // query.status = JournalStatus.PUBLISHED;
+    // } else
+    if (target) {
       query.target = target;
     }
 
