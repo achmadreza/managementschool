@@ -20,11 +20,29 @@ import {
 import { UploadBillingFileDto } from './dto/upload-billing-file.dto';
 import { BillingStatus } from './schemas/billing.schema';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SendEmailPayload } from 'src/email/email.service';
 
 @ApiTags('billings')
 @Controller('billings')
 export class BillingController {
-  constructor(private readonly billingService: BillingService) {}
+  constructor(
+    private readonly billingService: BillingService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
+
+  @Get('send-email')
+  async sendEmail() {
+    const html = `<p style="color: blue; background-color: yellow; font-size: 32px;"> This is a test email. </p>`;
+    await this.eventEmitter.emitAsync('email.send', {
+      from: 'cobacoba@gmail.com',
+      subject: 'Test Email',
+      to: 'aryobimoww19@gmail.com',
+      html,
+    } as SendEmailPayload);
+
+    return 'Email sent';
+  }
 
   @Post()
   @UseGuards(JwtAuthGuard)

@@ -41,6 +41,9 @@ export class User {
 
   @Prop({ default: Date.now })
   createdAt!: Date;
+
+  @Prop({ required: true, default: false })
+  emailVerified!: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

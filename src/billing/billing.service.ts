@@ -14,6 +14,8 @@ import {
 import { CreateBillingDto } from './dto/create-billing.dto';
 import { UpdateBillingDto } from './dto/update-billing.dto';
 import { Student, StudentDocument } from 'src/student/schemas/student.schema';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SendEmailPayload } from 'src/email/email.service';
 
 @Injectable()
 export class BillingService {
@@ -22,6 +24,7 @@ export class BillingService {
     private readonly billingModel: Model<BillingDocument>,
     @InjectModel(Student.name)
     private readonly studentModel: Model<StudentDocument>, // Replace 'any' with the actual StudentDocument type if available
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(createBillingDto: CreateBillingDto): Promise<Billing> {
@@ -151,6 +154,18 @@ export class BillingService {
     if (!billing) {
       throw new NotFoundException('Billing not found');
     }
+
+    const html = `
+    <p>Halo orang tua dati ${billing.studentName}</p>
+    <p>status tagihan untuk anak anda telah diperbarui menjadi: <strong style="text-transform: uppercase; ${billing.status === BillingStatus.WAITING_APPROVAL ? 'color: blue;' : billing.status === BillingStatus.PAID ? 'color: #28a745;' : 'color: #dc3545;'}">${billing.status}</strong></p>
+    <p>cek detail tagihan dengan klik url di bawah ini:</p>
+    <a href="${process.env.FRONTEND_URL ?? 'http://localhost:3001'}" target="_blank">${process.env.FRONTEND_URL ?? 'http://localhost:3001'}</a>
+    `;
+    await this.eventEmitter.emitAsync('email.send', {
+      subject: 'Billing Status Update',
+      to: billing.parentEmail ?? '',
+      html,
+    } as SendEmailPayload);
 
     return billing;
   }

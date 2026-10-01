@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +13,7 @@ import { TrialClassModule } from './trial-class/trial-class.module';
 import { JournalModule } from './journal/journal.module';
 import { MediaModule } from './media/media.module';
 import { StudentNoteModule } from './student-note/student-note.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { StudentNoteModule } from './student-note/student-note.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    EventEmitterModule.forRoot(),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET ?? 'school-secret-key',
@@ -36,6 +39,7 @@ import { StudentNoteModule } from './student-note/student-note.module';
     JournalModule,
     MediaModule,
     StudentNoteModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

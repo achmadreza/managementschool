@@ -10,11 +10,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hashPassword } from './password.util';
 import { UserRole } from './enums/user-role.enum';
+import { SendEmailPayload } from 'src/email/email.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<User> {
@@ -50,7 +53,18 @@ export class UserService {
     if (createUserDto.role) {
       user.role = createUserDto.role;
     }
+    if (createUserDto.role === UserRole.ADMIN) {
+      user.emailVerified = true;
+    }
 
+    if (!createUserDto.role || createUserDto.role === UserRole.PARENT) {
+      const data = createUserDto.email;
+      await this.eventEmitter.emitAsync('send.email.verify', {
+        subject: 'Email verify',
+        to: createUserDto.email,
+        data,
+      } as SendEmailPayload);
+    }
     return user.save();
   }
 

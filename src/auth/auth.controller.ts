@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -35,6 +37,17 @@ export class AuthController {
   @Post('signin')
   signin(@Body() signinDto: SigninDto) {
     return this.authService.signin(signinDto);
+  }
+
+  @Get('email-verify')
+  @Header('Content-Type', 'text/html')
+  verifyEmail(@Query('token') token: string) {
+    return this.authService.verifyEmail(token);
+  }
+
+  @Get('resend-email-verify')
+  resendEmail(@Query('token') token: string) {
+    return this.authService.resendEmail(token);
   }
 
   @Get('profile')
