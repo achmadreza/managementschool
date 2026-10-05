@@ -73,7 +73,7 @@ export class EmailService {
     try {
       await this.transporter.sendMail({
         from,
-        to: 'aryobimoww19@gmail.com',
+        to: payload.to ??'aryobimoww19@gmail.com',
         subject: payload.subject ?? 'greeting',
         text: payload.text ?? 'HELLO WORLD',
         html:

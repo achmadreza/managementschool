@@ -336,7 +336,7 @@ export class AuthService {
     if (user?.emailVerified) {
       throw new UnauthorizedException('Email already verified');
     }
-
+    console.log(email)
     await this.eventEmitter.emitAsync('send.email.verify', {
       subject: 'Email verify',
       to: email,
