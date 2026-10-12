@@ -10,6 +10,9 @@ import {
 } from './schemas/journal.schema';
 import { UserRole } from 'src/auth/enums/user-role.enum';
 import { Student, StudentDocument } from 'src/student/schemas/student.schema';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SendEmailPayload } from 'src/email/email.service';
+import { User, UserDocument } from 'src/auth/schemas/user.schema';
 
 @Injectable()
 export class JournalService {
@@ -17,10 +20,32 @@ export class JournalService {
     @InjectModel(Journal.name)
     private readonly journalModel: Model<JournalDocument>,
     @InjectModel(Student.name)
-    private readonly studentModel: Model<StudentDocument>,
+    private readonly studentModel: Model<StudentDocument>, // Replace 'any' with the actual StudentDocument type if available
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(createJournalDto: CreateJournalDto): Promise<Journal> {
+    if (createJournalDto.status === JournalStatus.PUBLISHED) {
+      const parent = await this.userModel
+        .find({ role: UserRole.PARENT })
+        .lean();
+
+      const html = `
+      <p>title: ${createJournalDto.title}</p>
+      <p>${createJournalDto.message}</p>
+      <p>silahkan kunjungi halaman berikut untuk informasi lebih lanjut.</p>
+      <a href="${process.env.FRONTEND_URL}">${process.env.FRONTEND_URL}</a>
+      `;
+      parent?.length > 0 &&
+        parent.forEach(async (p) => {
+          await this.eventEmitter.emitAsync('email.send', {
+            subject: 'Announcement',
+            to: p.email ?? '',
+            html,
+          } as SendEmailPayload);
+        });
+    }
     return await new this.journalModel(createJournalDto).save();
   }
 
