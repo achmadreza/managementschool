@@ -156,7 +156,7 @@ export class BillingService {
     }
 
     const html = `
-    <p>Halo orang tua dati ${billing.studentName}</p>
+    <p>Halo orang tua dari ${billing.studentName}</p>
     <p>status tagihan untuk anak anda telah diperbarui menjadi: <strong style="text-transform: uppercase; ${billing.status === BillingStatus.WAITING_APPROVAL ? 'color: blue;' : billing.status === BillingStatus.PAID ? 'color: #28a745;' : 'color: #dc3545;'}">${billing.status}</strong></p>
     <p>cek detail tagihan dengan klik url di bawah ini:</p>
     <a href="${process.env.FRONTEND_URL ?? 'http://localhost:3001'}" target="_blank">${process.env.FRONTEND_URL ?? 'http://localhost:3001'}</a>
