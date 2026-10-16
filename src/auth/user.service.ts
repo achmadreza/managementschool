@@ -53,7 +53,10 @@ export class UserService {
     if (createUserDto.role) {
       user.role = createUserDto.role;
     }
-    if (createUserDto.role === UserRole.ADMIN) {
+    if (
+      createUserDto.role === UserRole.ADMIN ||
+      createUserDto.role === UserRole.TEACHER
+    ) {
       user.emailVerified = true;
     }
 
