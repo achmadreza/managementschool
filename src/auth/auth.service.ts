@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -11,6 +16,7 @@ import { SendEmailPayload } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name); // Replace with your preferred logger
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
@@ -23,16 +29,19 @@ export class AuthService {
     const user = await this.userModel.findOne({ email });
 
     if (!user) {
+      this.logger.warn(`Failed login attempt for email: ${email}`);
       throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
+      this.logger.warn(`Failed login attempt for email: ${email}`);
       throw new UnauthorizedException('Invalid email or password');
     }
 
     if (user.emailVerified === false) {
+      this.logger.warn(`Unverified user attempted login: ${email}`);
       throw new UnauthorizedException(
         'Silahkan cek email anda untuk melakukan verifikasi email',
       );
@@ -46,7 +55,7 @@ export class AuthService {
     };
 
     const accessToken = await this.jwtService.signAsync(payload);
-
+    this.logger.log(`User logged in successfully: ${email}`);
     return {
       accessToken,
       user: {
@@ -78,7 +87,7 @@ export class AuthService {
       { id: userId },
       { $push: { tokenBlacklist: token } },
     );
-
+    this.logger.log(`User logged out successfully: ${userId}`);
     return {
       message: 'Logout successful - token destroyed',
       statusCode: 200,
@@ -90,6 +99,9 @@ export class AuthService {
 
     if (!user) {
       // Don't reveal if email exists or not for security
+      this.logger.warn(
+        `Password reset requested for non-existent email: ${email}`,
+      );
       return {
         message: ' IF email exists, reset link has been sent',
         statusCode: 200,
@@ -115,6 +127,8 @@ export class AuthService {
     // In production, send email with reset link
     console.log(`Reset token: ${resetToken}`);
 
+    this.logger.log(`Password reset token generated for email: ${email}`);
+
     return {
       message: 'If email exists, reset link has been sent',
       data: { token: resetToken },
@@ -129,6 +143,7 @@ export class AuthService {
     });
 
     if (!user) {
+      this.logger.warn(`Invalid or expired reset token used: ${token}`);
       throw new UnauthorizedException('Invalid or expired reset token');
     }
 
@@ -143,7 +158,7 @@ export class AuthService {
         resetTokenExpiry: null,
       },
     );
-
+    this.logger.log(`Password reset successful for user: ${user.email}`);
     return {
       message: 'Password reset successful',
       statusCode: 200,
@@ -158,6 +173,9 @@ export class AuthService {
     const user = await this.userModel.findOne({ id: userId });
 
     if (!user) {
+      this.logger.warn(
+        `Attempt to change password for non-existent user: ${userId}`,
+      );
       throw new UnauthorizedException('User not found');
     }
 
@@ -167,6 +185,9 @@ export class AuthService {
     );
 
     if (!isCurrentPasswordValid) {
+      this.logger.warn(
+        `Incorrect current password attempt for user: ${userId}`,
+      );
       throw new UnauthorizedException('Current password is incorrect');
     }
 
@@ -328,12 +349,23 @@ export class AuthService {
 
   async resendEmail(token: string) {
     if (!token) {
+      this.logger.warn('Resend email verification attempted without token');
       throw new UnauthorizedException('Token is required');
     }
     const email = atob(token);
     const user = await this.userModel.findOne({ email });
 
+    if (!user) {
+      this.logger.warn(
+        `Resend email verification attempted for non-existent email: ${email}`,
+      );
+      throw new NotFoundException('User not registered');
+    }
+
     if (user?.emailVerified) {
+      this.logger.warn(
+        `Resend email verification attempted for already verified email: ${email}`,
+      );
       throw new UnauthorizedException('Email already verified');
     }
 
@@ -342,6 +374,7 @@ export class AuthService {
       to: email,
       data: email,
     } as SendEmailPayload);
+    this.logger.log(`Resend email verification sent to: ${email}`);
     return {
       message: 'Resend email verify success, silahkan cek email anda',
       statusCode: 200,
